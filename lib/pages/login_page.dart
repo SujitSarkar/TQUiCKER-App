@@ -18,7 +18,7 @@ class LoginPage extends StatelessWidget {
               Stack(
                 alignment: Alignment.bottomLeft,
                 children: [
-                  GredientBG(
+                  GradientBG(
                     context: context,
                     height: 0.33,
                     child: Container(),

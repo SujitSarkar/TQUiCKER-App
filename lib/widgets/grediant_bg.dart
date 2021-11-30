@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 
-class GredientBG extends StatelessWidget {
-  const GredientBG(
+class GradientBG extends StatelessWidget {
+  const GradientBG(
       {Key? key,
       required this.context,
       required this.height,
@@ -23,8 +23,8 @@ class GredientBG extends StatelessWidget {
         begin: Alignment.topRight,
         end: Alignment.centerLeft,
         colors: [
-          ThemeAndColor.rightGredientColor,
-          ThemeAndColor.leftGredientColor
+          ThemeAndColor.rightGradientColor,
+          ThemeAndColor.leftGradientColor
         ],
       )),
       child: child,

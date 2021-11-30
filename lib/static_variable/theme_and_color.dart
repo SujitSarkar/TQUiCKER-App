@@ -28,8 +28,8 @@ class ThemeAndColor {
   static Color whiteColor = Colors.white;
   static Color blackColor = Colors.black45;
   static const Color secondaryColor = Color(0xFFE91F24);
-  static const Color leftGredientColor = Color(0xFF7EB342);
-  static const Color rightGredientColor = Color(0xFF9ADB47);
+  static const Color leftGradientColor = Color(0xFF7EB342);
+  static const Color rightGradientColor = Color(0xFF9ADB47);
   static const Color buttonBGColor = Color(0xFFEDEDED);
 
   static final appTheme = ThemeData(

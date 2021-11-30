@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tquicker/pages/login_page.dart';
 import 'package:tquicker/size_config.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/grediant_bg.dart';
@@ -19,7 +17,7 @@ class UserTypePage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  GredientBG(
+                  GradientBG(
                     context: context,
                     height: 0.33,
                     child: Container(),
