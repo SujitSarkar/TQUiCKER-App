@@ -24,32 +24,32 @@ class LoginPage extends StatelessWidget {
                     child: Container(),
                   ),
                   Positioned(
-                    bottom: customeWidth(0),
-                    right: customeWidth(0),
+                    bottom: customWidth(0),
+                    right: customWidth(0),
                     child: Opacity(
                       opacity: 0.3,
                       child: Image.asset(
                         "assets/images/user.png",
-                        height: customeWidth(0.6),
+                        height: customWidth(0.6),
                       ),
                     ),
                   ),
                   Padding(
                     padding: EdgeInsets.symmetric(
-                        horizontal: customeWidth(0.08),
-                        vertical: customeWidth(0.04)),
+                        horizontal: customWidth(0.08),
+                        vertical: customWidth(0.04)),
                     child: Text(
                       "Log or Registration",
                       style: Theme.of(context)
                           .textTheme
                           .headline1!
-                          .copyWith(fontSize: customeWidth(0.05)),
+                          .copyWith(fontSize: customWidth(0.05)),
                     ),
                   ),
                 ],
               ),
               SizedBox(
-                height: customeWidth(0.1),
+                height: customWidth(0.1),
               ),
               // const widgetUserType(
               //   img: "assets/images/customer.png",
@@ -66,60 +66,6 @@ class LoginPage extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class widgetUserType extends StatelessWidget {
-  const widgetUserType({
-    Key? key,
-    required this.img,
-    required this.userType,
-  }) : super(key: key);
-
-  final String img;
-  final String userType;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Get.to(LoginPage()),
-      child: Container(
-        margin: EdgeInsets.symmetric(
-            horizontal: customeWidth(0.06), vertical: customeWidth(0.02)),
-        padding: EdgeInsets.all(customeWidth(0.03)),
-        decoration: BoxDecoration(
-            color: ThemeAndColor.buttonBGColor,
-            border: Border.all(color: ThemeAndColor.themeColor, width: 1.3),
-            borderRadius: BorderRadius.circular(customeWidth(0.04))),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              height: customeWidth(0.15),
-              width: customeWidth(0.15),
-              padding: EdgeInsets.all(6),
-              decoration: BoxDecoration(
-                  color: ThemeAndColor.buttonBGColor,
-                  border:
-                      Border.all(color: ThemeAndColor.themeColor, width: 1.3),
-                  borderRadius: BorderRadius.circular(customeWidth(0.4))),
-              child: Image.asset(
-                img,
-                fit: BoxFit.contain,
-              ),
-            ),
-            const SizedBox(
-              width: 15,
-            ),
-            Text(
-              userType,
-              style: TextStyle(
-                  fontSize: customeWidth(0.05), fontWeight: FontWeight.w500),
-            )
-          ],
-        ),
       ),
     );
   }

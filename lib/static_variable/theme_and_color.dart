@@ -42,27 +42,22 @@ class ThemeAndColor {
     )).copyWith(
       secondary: secondaryColor,
     ),
-    fontFamily: 'ubuntu',
+    fontFamily: 'openSans',
     canvasColor: Colors.transparent,
     textTheme: const TextTheme(
-      headline1: TextStyle(
-          fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 22),
-      headline2: TextStyle(
-          fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 18),
-      headline3: TextStyle(
-          fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 14),
-      headline4: TextStyle(
-          fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 12),
-      headline5: TextStyle(
-          fontFamily: "ubuntu", fontWeight: FontWeight.bold, fontSize: 10),
-      headline6: TextStyle(fontFamily: "ubuntu", fontSize: 10),
-      subtitle1: TextStyle(fontFamily: "ubuntu"),
-      subtitle2: TextStyle(fontFamily: "ubuntu"),
-      bodyText1: TextStyle(fontFamily: "ubuntu"),
-      bodyText2: TextStyle(fontFamily: "ubuntu"),
-      caption: TextStyle(fontFamily: "ubuntu"),
-      button: TextStyle(fontFamily: "ubuntu"),
-      overline: TextStyle(fontFamily: "ubuntu"),
+      headline1: TextStyle(fontFamily: "openSans"),
+      headline2: TextStyle(fontFamily: "openSans"),
+      headline3: TextStyle(fontFamily: "openSans"),
+      headline4: TextStyle(fontFamily: "openSans"),
+      headline5: TextStyle(fontFamily: "openSans"),
+      headline6: TextStyle(fontFamily: "openSans"),
+      subtitle1: TextStyle(fontFamily: "openSans"),
+      subtitle2: TextStyle(fontFamily: "openSans"),
+      bodyText1: TextStyle(fontFamily: "openSans"),
+      bodyText2: TextStyle(fontFamily: "openSans"),
+      caption: TextStyle(fontFamily: "openSans"),
+      button: TextStyle(fontFamily: "openSans"),
+      overline: TextStyle(fontFamily: "openSans"),
     ),
   );
 }
