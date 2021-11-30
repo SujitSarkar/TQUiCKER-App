@@ -3,8 +3,8 @@ import 'package:tquicker/static_variable/theme_and_color.dart';
 
 import '../size_config.dart';
 
-class CustomeTextFormField extends StatelessWidget {
-  const CustomeTextFormField({
+class CustomTextFormField extends StatelessWidget {
+  const CustomTextFormField({
     Key? key,
     required this.controller,
     required this.hintText,
@@ -33,7 +33,7 @@ class CustomeTextFormField extends StatelessWidget {
         ),
         hintText: hintText,
         hintStyle: Theme.of(context).textTheme.headline3!.copyWith(
-              fontSize: 12,
+              fontSize: customWidth(0.035),
               fontWeight: FontWeight.w700,
             ),
         fillColor: ThemeAndColor.buttonBGColor,
