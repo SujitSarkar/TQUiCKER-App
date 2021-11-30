@@ -24,6 +24,9 @@ dependencies:
   intl: ^0.17.0
   fluttertoast: ^8.0.8
   find_dropdown: ^1.0.0
+  font_awesome_flutter: ^9.2.0
+  flat_icons_flutter: ^1.0.2
+  card_swiper: ^1.0.4
 
 dev_dependencies:
   flutter_test:

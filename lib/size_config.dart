@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/controller/public_controller.dart';
 
@@ -12,4 +14,10 @@ class Config {
 
 double customWidth(double? v) {
   return Config().width(v ?? 0);
+}
+
+TextStyle textTheme(BuildContext context, double fontsize,
+    FontWeight fontWeight, Color? color) {
+  return Theme.of(context).textTheme.headline1!.copyWith(
+      fontSize: customWidth(fontsize), fontWeight: fontWeight, color: color);
 }
