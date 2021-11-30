@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tquicker/pages/final_page.dart';
-import 'package:tquicker/pages/home_page.dart';
-import 'package:tquicker/pages/login_page.dart';
+import 'package:tquicker/controller/public_controller.dart';
 import 'package:tquicker/pages/user_type.dart';
-import 'controller/public_controller.dart';
-import 'size_config.dart';
+import 'package:tquicker/static_variable/size_config.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -18,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 3))
-        .then((value) => Get.offAll(() => HomePage()));
+        .then((value) => Get.offAll(() => const UserTypePage()));
   }
 
   @override

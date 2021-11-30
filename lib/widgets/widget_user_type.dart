@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:tquicker/pages/login_page.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
-
-import '../size_config.dart';
+import '../static_variable/size_config.dart';
 
 class WidgetUserType extends StatelessWidget {
   const WidgetUserType({
     Key? key,
     required this.img,
     required this.userType,
+    required this.onTap
   }) : super(key: key);
 
   final String img;
   final String userType;
+  final Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(()=>const LoginPage()),
+      onTap: onTap,
       child: Container(
         margin: EdgeInsets.symmetric(
             horizontal: customWidth(0.06), vertical: customWidth(0.02)),

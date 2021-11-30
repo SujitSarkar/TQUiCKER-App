@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 
-import '../size_config.dart';
+import '../static_variable/size_config.dart';
 
 class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({

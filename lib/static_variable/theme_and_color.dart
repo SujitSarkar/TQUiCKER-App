@@ -25,6 +25,7 @@ class ThemeAndColor {
   ];
 
   static Color greyColor = Colors.grey;
+  static Color textColor = Colors.grey.shade900;
   static Color whiteColor = Colors.white;
   static Color blackColor = Colors.black45;
   static const Color secondaryColor = Color(0xFFE91F24);

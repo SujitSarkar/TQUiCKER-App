@@ -3,7 +3,7 @@ import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tquicker/static_variable/widgets.dart';
-import 'splash_screen.dart';
+import 'pages/splash_screen.dart';
 import 'static_variable/theme_and_color.dart';
 
 void main() async {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tquicker/size_config.dart';
+import 'package:tquicker/static_variable/size_config.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
 

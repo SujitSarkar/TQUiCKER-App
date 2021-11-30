@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:tquicker/size_config.dart';
+import 'package:get/get.dart';
+import 'package:tquicker/pages/customer/customer_login_page.dart';
+import 'package:tquicker/pages/vehicle_owner/owner_login_page.dart';
+import 'package:tquicker/static_variable/size_config.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/grediant_bg.dart';
 import 'package:tquicker/widgets/widget_user_type.dart';
@@ -17,7 +20,7 @@ class UserTypePage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  GradientBG(height: customWidth(0.65)),
+                  GradientBG(height: customWidth(0.6)),
                   ///Car
                   Positioned(
                     bottom: customWidth(-0.11),
@@ -60,24 +63,27 @@ class UserTypePage extends StatelessWidget {
                 ],
               ),
               SizedBox(height: customWidth(0.1)),
-              const WidgetUserType(
+              WidgetUserType(
                 img: "assets/images/customer.png",
                 userType: "Customer",
+                onTap: ()=>Get.to(()=>CustomerLoginPage()),
               ),
-              const WidgetUserType(
+              WidgetUserType(
                 img: "assets/images/vahicales owner.png",
                 userType: "Vehicles Owner",
+                onTap: ()=>Get.to(()=>OwnerLoginPage()),
               ),
-              const WidgetUserType(
+              WidgetUserType(
                 img: "assets/images/driver.png",
                 userType: "Driver",
+                onTap: (){},
               ),
             ],
           ),
 
           ///User Circle
           Positioned(
-            top: customWidth(0.57),
+            top: customWidth(0.52),
             right: customWidth(0.08),
             child: Container(
               height: customWidth(0.15),

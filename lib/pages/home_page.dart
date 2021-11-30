@@ -1,13 +1,13 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:card_swiper/card_swiper.dart';
-import 'package:flat_icons_flutter/flat_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:line_awesome_flutter/line_awesome_flutter.dart';
-import 'package:tquicker/size_config.dart';
+import 'package:tquicker/static_variable/size_config.dart';
+
 import 'package:tquicker/static_variable/theme_and_color.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -124,21 +124,23 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _grideView(context),
-          _bannerSlider(
-            context,
-            "Public Transportation Offer",
-            "assets/images/images.jpg",
-          ),
-          _bannerSlider(
-            context,
-            "Heavy Vehicles Offer",
-            "assets/images/images.jpg",
-          ),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _gridView(context),
+            _bannerSlider(
+              context,
+              "Public Transportation Offer",
+              "assets/images/images.jpg",
+            ),
+            _bannerSlider(
+              context,
+              "Heavy Vehicles Offer",
+              "assets/images/images.jpg",
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -185,20 +187,21 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Container _grideView(BuildContext context) {
+  Container _gridView(BuildContext context) {
     return Container(
       color: ThemeAndColor.buttonBGColor,
       padding: EdgeInsets.all(customWidth(0.05)),
       child: GridView.count(
         physics: const ClampingScrollPhysics(),
         crossAxisCount: 4,
-        childAspectRatio: .9,
+        childAspectRatio: 1.2,
         shrinkWrap: true,
         crossAxisSpacing: 10,
         mainAxisSpacing: 10,
         children: List.generate(gridText.length, (index) {
           return Container(
-            width: customWidth(0.05),
+            //width: customWidth(0.05),
+            alignment: Alignment.center,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(customWidth(0.03)),
@@ -208,18 +211,18 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             child: Column(
-              mainAxisSize: MainAxisSize.max,
+              //mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Icon(gridIcons[index]),
+                Icon(gridIcons[index],size: customWidth(0.05)),
                 Padding(
                   padding: EdgeInsets.all(customWidth(0.01)),
-                  child: Text(
+                  child: AutoSizeText(
                     gridText[index],
-                    maxLines: 2,
                     textAlign: TextAlign.center,
-                    style: textTheme(context, 0.03, FontWeight.w700, null),
+                    maxLines: 2,
+                    style: TextStyle(color: ThemeAndColor.textColor,fontSize: customWidth(0.02)),
                   ),
                 ),
               ],
