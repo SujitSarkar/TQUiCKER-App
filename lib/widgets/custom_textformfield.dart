@@ -20,7 +20,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         isDense: true,
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+            const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(customWidth(0.025)),
           borderSide:

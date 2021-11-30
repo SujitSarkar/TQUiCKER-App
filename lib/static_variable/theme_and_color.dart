@@ -37,7 +37,7 @@ class ThemeAndColor {
     primarySwatch: const MaterialColor(0xFF7EB342, themeMapColor),
     colorScheme: ColorScheme.fromSwatch(
         primarySwatch: const MaterialColor(
-      0xff096799,
+      0xFF7EB342,
       themeMapColor,
     )).copyWith(
       secondary: secondaryColor,
