@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/pages/login_page.dart';
 import 'package:tquicker/pages/user_type.dart';
-import 'package:tquicker/static_variable/theme_and_color.dart';
-
 import 'controller/public_controller.dart';
 import 'size_config.dart';
 
@@ -17,27 +15,32 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    // Future.delayed(const Duration(seconds: 3))
-    //     .then((value) => Get.offAll(() => const UserTypePage()));
+    Future.delayed(const Duration(seconds: 3))
+        .then((value) => Get.offAll(() => const LoginPage()));
   }
 
   @override
   Widget build(BuildContext context) {
     final PublicController publicController = Get.put(PublicController());
-    return Scaffold(
+    return GetBuilder<PublicController>(builder: (publicController)=>Scaffold(
       backgroundColor: Colors.white,
       extendBody: true,
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/logo.png',height: customWidth(0.35)),
-            SizedBox(height: customWidth(0.02)),
-            Text('An Online Transportation Service')
-          ],
-        )
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: publicController.size.value*.045),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/logo.png',height: publicController.size.value*.3),
+                SizedBox(height: customWidth(0.02)),
+                Text('An Online Transportation Service',style: TextStyle(fontSize: publicController.size.value*.035)),
+                SizedBox(height: customWidth(0.1)),
+                Image.asset('assets/images/red_green.png',),
+              ],
+            ),
+          )
       ),
-    );
+    ));
   }
 }

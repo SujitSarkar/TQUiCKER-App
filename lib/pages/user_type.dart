@@ -17,19 +17,16 @@ class UserTypePage extends StatelessWidget {
               Stack(
                 alignment: Alignment.center,
                 children: [
-                  GradientBG(
-                    context: context,
-                    height: 0.33,
-                    child: Container(),
-                  ),
+                  GradientBG(height: customWidth(0.65)),
+                  ///Car
                   Positioned(
-                    bottom: customWidth(-0.12),
-                    right: customWidth(-0.06),
+                    bottom: customWidth(-0.11),
+                    right: customWidth(-0.07),
                     child: Opacity(
                       opacity: 0.6,
                       child: Image.asset(
                         "assets/images/car.png",
-                        height: customWidth(0.5),
+                        height: customWidth(0.45),
                       ),
                     ),
                   ),
@@ -48,13 +45,13 @@ class UserTypePage extends StatelessWidget {
                                 .headline1!
                                 .copyWith(
                                     color: ThemeAndColor.whiteColor,
-                                    fontSize: customWidth(0.07)),
+                                    fontSize: customWidth(0.065),fontWeight: FontWeight.bold),
                           ),
-                          const Text(
-                            "Coustomer . Owner . Driver",
+                           Text(
+                            "Customer . Owner . Driver",
                             style: TextStyle(
                                 color: Colors.black,
-                                fontWeight: FontWeight.w700),
+                                fontWeight: FontWeight.w700,fontSize: customWidth(0.035)),
                           ),
                         ],
                       ),
@@ -62,16 +59,14 @@ class UserTypePage extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: customWidth(0.1),
-              ),
+              SizedBox(height: customWidth(0.1)),
               const WidgetUserType(
                 img: "assets/images/customer.png",
                 userType: "Customer",
               ),
               const WidgetUserType(
                 img: "assets/images/vahicales owner.png",
-                userType: "Vehicels Owner",
+                userType: "Vehicles Owner",
               ),
               const WidgetUserType(
                 img: "assets/images/driver.png",
@@ -79,15 +74,17 @@ class UserTypePage extends StatelessWidget {
               ),
             ],
           ),
+
+          ///User Circle
           Positioned(
-            bottom: customWidth(1.43),
+            top: customWidth(0.57),
             right: customWidth(0.08),
             child: Container(
-              height: customWidth(0.14),
-              width: customWidth(0.14),
+              height: customWidth(0.15),
+              width: customWidth(0.15),
               padding: EdgeInsets.all(customWidth(0.018)),
               decoration: BoxDecoration(
-                  color: Colors.grey[350],
+                  color: Colors.grey.shade300,
                   borderRadius: BorderRadius.circular(customWidth(0.16))),
               child: Image.asset(
                 "assets/images/user.png",

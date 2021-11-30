@@ -31,8 +31,8 @@ class WidgetUserType extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              height: customWidth(0.15),
-              width: customWidth(0.15),
+              height: customWidth(0.13),
+              width: customWidth(0.13),
               padding: const EdgeInsets.all(6),
               decoration: BoxDecoration(
                   color: ThemeAndColor.buttonBGColor,
@@ -41,16 +41,14 @@ class WidgetUserType extends StatelessWidget {
                   borderRadius: BorderRadius.circular(customWidth(0.4))),
               child: Image.asset(
                 img,
-                fit: BoxFit.contain,
+                fit: BoxFit.contain
               ),
             ),
-            const SizedBox(
-              width: 15,
-            ),
+            SizedBox(width: customWidth(0.04)),
             Text(
               userType,
               style: TextStyle(
-                  fontSize: customWidth(0.05), fontWeight: FontWeight.w500),
+                  fontSize: customWidth(0.05), fontWeight: FontWeight.w500)
             )
           ],
         ),
