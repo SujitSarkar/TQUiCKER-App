@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final PublicController publicController = Get.put(PublicController());
+    //final PublicController publicController = Get.put(PublicController());
     return GetBuilder<PublicController>(
         builder: (publicController) => Scaffold(
               backgroundColor: Colors.white,

@@ -16,8 +16,8 @@ double customWidth(double? v) {
   return Config().width(v ?? 0);
 }
 
-TextStyle textTheme(BuildContext context, double fontsize,
+TextStyle textTheme(BuildContext context, double fontSize,
     FontWeight fontWeight, Color? color) {
   return Theme.of(context).textTheme.headline1!.copyWith(
-      fontSize: customWidth(fontsize), fontWeight: fontWeight, color: color);
+      fontSize: customWidth(fontSize), fontWeight: fontWeight, color: color);
 }

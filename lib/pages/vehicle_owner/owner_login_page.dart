@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/pages/customer/customer_registration_page.dart';
@@ -59,6 +60,22 @@ class OwnerLoginPage extends StatelessWidget {
                     CustomTextFormField(controller: _phone, hintText: 'Mobile Number (ex: 01830200087)'),
                     SizedBox(height: customWidth(0.08)),
                     CustomTextFormField(controller: _password, hintText: 'Enter Your Password'),
+                    SizedBox(height: customWidth(0.04)),
+
+                    RichText(
+                      text: TextSpan(
+                        style: Theme.of(context).textTheme.headline3!.copyWith(
+                          fontSize: customWidth(0.04),
+                          fontWeight: FontWeight.w600),
+
+                        children: <TextSpan>[
+                          const TextSpan(text: 'Don\'t have account?'),
+                          TextSpan(text: ' register',
+                              recognizer: TapGestureRecognizer()..onTap=()=>Get.to(()=>OwnerRegistrationPage()),
+                              style: TextStyle(color: Theme.of(context).primaryColor)),
+                        ],
+                      ),
+                    ),
                     SizedBox(height: customWidth(0.15)),
 
                     SolidButton(child: Text('Send',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),

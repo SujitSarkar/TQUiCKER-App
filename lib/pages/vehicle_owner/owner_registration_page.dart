@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tquicker/controller/public_controller.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
@@ -9,90 +13,189 @@ import 'package:tquicker/widgets/grediant_bg.dart';
 
 import '../../static_variable/size_config.dart';
 
-class OwnerRegistrationPage extends StatelessWidget {
-  OwnerRegistrationPage({Key? key}) : super(key: key);
+class OwnerRegistrationPage extends StatefulWidget {
+  const OwnerRegistrationPage({Key? key}) : super(key: key);
 
-  final TextEditingController _name=TextEditingController(text: '');
-  final TextEditingController _otp=TextEditingController(text: '');
-  final GlobalKey<ScaffoldState> _scaffoldKey=GlobalKey();
+  @override
+  State<OwnerRegistrationPage> createState() => _OwnerRegistrationPageState();
+}
+
+class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
+  File? _imageFile;
+  bool _isLoading=false;
+  final TextEditingController _name = TextEditingController(text: '');
+  final TextEditingController _email = TextEditingController(text: '');
+  final TextEditingController _contactNo = TextEditingController(text: '');
+  final TextEditingController _nationId = TextEditingController(text: '');
+  final TextEditingController _contactAddress = TextEditingController(text: '');
+  final TextEditingController _password = TextEditingController(text: '');
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      drawer: Drawer(),
-      resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  GradientBG(height: customWidth(0.6)),
-                  ///User
-                  Positioned(
-                    bottom: customWidth(0.03),
-                    child: Column(
-                      children: [
-                        Image.asset(
-                          "assets/images/user.png",
-                          height: customWidth(0.2),
-                        ),
-                        Text('Upload Your Photo',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold ,fontSize: customWidth(0.04)),)
-                      ],
-                    ),
-                  ),
+    return GetBuilder<PublicController>(
+      builder: (publicController) {
+        return Scaffold(
+            key: _scaffoldKey,
+            drawer: const Drawer(),
+            //resizeToAvoidBottomInset: false,
+            body: Column(
+              children: [
+                SizedBox(
+                  height: customWidth(0.6),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      GradientBG(height: customWidth(0.6)),
 
-                  ///Header Section
-                  Positioned(
-                    left: customWidth(0.02),
-                    top: customWidth(0.03),
-                    child: SafeArea(
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: (){
-                              _scaffoldKey.currentState!.openDrawer();
-                            },
-                              child: Icon(CupertinoIcons.bars,color: Colors.grey.shade200)),
-                          Text(
-                            "Complete Your Registration",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,fontSize: customWidth(0.045)),
+                      ///Profile Image
+                      Positioned(
+                        bottom: customWidth(0.03),
+                        child: _imageFile==null? InkWell(
+                          onTap: ()=>_getImageFromGallery(),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/images/user.png",
+                                height: customWidth(0.2),
+                              ),
+                              Text(
+                                'Upload Your Photo',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: customWidth(0.04)),
+                              )
+                            ],
                           ),
+                        ):InkWell(
+                          onTap: ()=>_getImageFromGallery(),
+                          child: Container(
+                            height: customWidth(0.25),
+                            width: customWidth(0.25),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(customWidth(0.2))),
+                              border: Border.all(color: Colors.white,width: 2),
+                              image: DecorationImage(
+                                image: FileImage(_imageFile!),
+                                fit: BoxFit.cover
+                              )
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      ///Header
+                      Positioned(
+                        left: customWidth(0.02),
+                        top: customWidth(0.03),
+                        child: SafeArea(
+                          child: Row(
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    _scaffoldKey.currentState!.openDrawer();
+                                  },
+                                  child: Icon(CupertinoIcons.bars,
+                                      color: Colors.grey.shade200)),
+                              Text(
+                                "Complete Your Registration",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700,
+                                    fontSize: customWidth(0.045)),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: EdgeInsets.all( customWidth(0.04)),
+                      child: Column(
+                        children: [
+                          CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)'),
+                          SizedBox(height: customWidth(0.05)),
+                          CustomTextFormField(controller: _email, hintText: 'Email Address'),
+                          SizedBox(height: customWidth(0.05)),
+                          CustomTextFormField(controller: _contactNo, hintText: 'Contact No'),
+                          SizedBox(height: customWidth(0.05)),
+                          CustomTextFormField(controller: _nationId, hintText: 'National ID'),
+                          SizedBox(height: customWidth(0.05)),
+                          CustomTextFormField(controller: _contactAddress, hintText: 'Contact Address'),
+                          SizedBox(height: customWidth(0.05)),
+                          CustomTextFormField(controller: _password, hintText: 'password'),
+                          SizedBox(height: customWidth(0.15)),
+
+                          _isLoading
+                              ?spinCircle()
+                              :SolidButton(
+                              child: Text('Send',
+                                  style: TextStyle(
+                                      color: ThemeAndColor.textColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: customWidth(0.04))),
+                              onPressed: (){
+                                if(_imageFile!=null){
+                                  if(_name.text.isNotEmpty&&_email.text.isNotEmpty&&_contactNo.text.isNotEmpty&&
+                                      _nationId.text.isNotEmpty&&_contactAddress.text.isNotEmpty&_password.text.isNotEmpty){
+                                    _registerUser(publicController);
+                                  }else{showToast('Field can\'t be empty');}
+                                }else{showToast('Select profile image');}
+                              },
+                              height: customWidth(0.1),
+                              width: customWidth(0.4),
+                              borderRadius: customWidth(0.02)),
                         ],
                       ),
                     ),
                   ),
-                ],
-              ),
-
-              ///TextField
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: customWidth(0.04)),
-                child: Column(
-                  children: [
-                    CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)'),
-                    SizedBox(height: customWidth(0.08)),
-                    CustomTextFormField(controller: _otp, hintText: 'Enter OTP'),
-                    SizedBox(height: customWidth(0.15)),
-
-                    SolidButton(child: Text('Send',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),
-                      onPressed: ()=>Get.to(()=> AddVehiclePage()),
-                      height: customWidth(0.1),
-                      width: customWidth(0.4),
-                      borderRadius: customWidth(0.02)),
-                  ],
                 ),
-              ),
-              Container()
-            ],
-          ),
-        ],
-      ),
+              ],
+            )
+            );
+      }
     );
+  }
+
+  Future<void> _registerUser(PublicController publicController)async{
+    final List<int> _imageBytes = _imageFile!.readAsBytesSync();
+    final String _base64Image = base64Encode(_imageBytes);
+    Map dataMap={
+      'name':_name.text,
+      'email':_email.text,
+      'contact_no':_contactNo.text,
+      'national_id':_nationId.text,
+      'contact_address':_contactAddress.text,
+      'password':_password.text,
+      'image': _base64Image
+    };
+    setState(()=>_isLoading=true);
+    await publicController.getOwnerRegData(dataMap).then((result){
+      if(result){
+        setState(()=>_isLoading=false);
+        Get.to(() => AddVehiclePage());
+      }else{
+        setState(()=>_isLoading=false);
+        //showToast('Registration Failed!');
+      }
+    });
+  }
+
+  Future<void> _getImageFromGallery()async{
+    final ImagePicker _picker = ImagePicker();
+    final XFile? _image = await _picker.pickImage(source: ImageSource.gallery);
+    if(_image!=null){
+      setState(() {
+        _imageFile = File(_image.path);
+      });
+    }else {
+      showToast('Image not selected');
+    }
+
   }
 }

@@ -18,25 +18,23 @@ class SolidButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          primary: Colors.white,
-          padding: const EdgeInsets.symmetric(horizontal: 0.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(borderRadius??5.0)),
-          ),
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(borderRadius??5.0)),
         ),
-        child: Ink(
-          height: height,
-          width: width,
-          decoration: BoxDecoration(
-              color: btnColor??Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.all(Radius.circular(borderRadius??5.0))),
-          child: Center(
-            child: child,
-          ),
+      ),
+      child: Ink(
+        height: height,
+        width: width,
+        decoration: BoxDecoration(
+            color: btnColor??Theme.of(context).primaryColor,
+            borderRadius: BorderRadius.all(Radius.circular(borderRadius??5.0))),
+        child: Center(
+          child: child,
         ),
       ),
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class ThemeAndColor {
   static const Color themeColor = Color(0xFF7EB342);
@@ -62,3 +64,23 @@ class ThemeAndColor {
     ),
   );
 }
+
+void showToast(String message){
+  Fluttertoast.showToast(
+    msg: message,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 4,
+    backgroundColor: Colors.black87,
+    textColor: Colors.white,
+    fontSize: 16,
+  );
+}
+
+Widget spinCircle()=>
+    const Center(
+      child: SpinKitCircle(
+        color: ThemeAndColor.themeColor,
+        size: 50.0,
+      ),
+    );
