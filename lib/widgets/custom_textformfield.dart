@@ -23,8 +23,7 @@ class CustomTextFormField extends StatelessWidget {
             const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(customWidth(0.025)),
-          borderSide:
-              const BorderSide(color: ThemeAndColor.themeColor, width: 1.5),
+          borderSide: const BorderSide(color: ThemeAndColor.themeColor, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(customWidth(0.025)),

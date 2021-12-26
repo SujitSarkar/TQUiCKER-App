@@ -23,6 +23,7 @@ class OwnerRegistrationPage extends StatefulWidget {
 class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
   File? _imageFile;
   bool _isLoading=false;
+
   final TextEditingController _name = TextEditingController(text: '');
   final TextEditingController _email = TextEditingController(text: '');
   final TextEditingController _contactNo = TextEditingController(text: '');
@@ -30,6 +31,19 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
   final TextEditingController _contactAddress = TextEditingController(text: '');
   final TextEditingController _password = TextEditingController(text: '');
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
+
+  @override
+  initState(){
+    super.initState();
+    PublicController publicController= Get.find();
+    if(publicController.vehicleCategoryList.isEmpty || publicController.metroNameList.isEmpty
+    || publicController.vehicleTypeList.isEmpty || publicController.vehicleSeatCapacityList.isEmpty ||
+     publicController.vehicleLengthList.isEmpty || publicController.metroSerialList.isEmpty||
+        publicController.loadCapacityList.isEmpty){
+      publicController.getAllVehicleDataList();
+    }
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -163,6 +177,8 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
   }
 
   Future<void> _registerUser(PublicController publicController)async{
+    setState(()=>_isLoading=true);
+
     final List<int> _imageBytes = _imageFile!.readAsBytesSync();
     final String _base64Image = base64Encode(_imageBytes);
     Map dataMap={
@@ -174,11 +190,10 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
       'password':_password.text,
       'image': _base64Image
     };
-    setState(()=>_isLoading=true);
     await publicController.getOwnerRegData(dataMap).then((result){
       if(result){
         setState(()=>_isLoading=false);
-        Get.to(() => AddVehiclePage());
+        Get.offAll(() => AddVehiclePage(ownerToken: publicController.regResponseModel.value.token!));
       }else{
         setState(()=>_isLoading=false);
         //showToast('Registration Failed!');
