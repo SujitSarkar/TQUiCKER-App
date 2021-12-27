@@ -8,15 +8,18 @@ class CustomTextFormField extends StatelessWidget {
     Key? key,
     required this.controller,
     required this.hintText,
+    required this.textInputType
   }) : super(key: key);
 
   final TextEditingController controller;
   final String hintText;
+  final TextInputType textInputType;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      keyboardType: textInputType,
       decoration: InputDecoration(
         isDense: true,
         contentPadding:

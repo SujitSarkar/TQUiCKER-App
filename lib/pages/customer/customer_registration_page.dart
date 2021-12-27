@@ -76,9 +76,9 @@ class CustomerRegistrationPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: customWidth(0.04)),
                 child: Column(
                   children: [
-                    CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)'),
+                    CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)',textInputType: TextInputType.text),
                     SizedBox(height: customWidth(0.08)),
-                    CustomTextFormField(controller: _otp, hintText: 'Enter OTP'),
+                    CustomTextFormField(controller: _otp, hintText: 'Enter OTP',textInputType: TextInputType.number),
                     SizedBox(height: customWidth(0.15)),
 
                     SolidButton(child: Text('Send',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),

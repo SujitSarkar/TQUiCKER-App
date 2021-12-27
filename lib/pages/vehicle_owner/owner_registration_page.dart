@@ -132,17 +132,17 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
                       padding: EdgeInsets.all( customWidth(0.04)),
                       child: Column(
                         children: [
-                          CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)'),
+                          CustomTextFormField(controller: _name, hintText: 'Full Name (ex: Mr. Enan)',textInputType: TextInputType.text),
                           SizedBox(height: customWidth(0.05)),
-                          CustomTextFormField(controller: _email, hintText: 'Email Address'),
+                          CustomTextFormField(controller: _email, hintText: 'Email Address',textInputType: TextInputType.emailAddress),
                           SizedBox(height: customWidth(0.05)),
-                          CustomTextFormField(controller: _contactNo, hintText: 'Contact No'),
+                          CustomTextFormField(controller: _contactNo, hintText: 'Contact No',textInputType: TextInputType.number),
                           SizedBox(height: customWidth(0.05)),
-                          CustomTextFormField(controller: _nationId, hintText: 'National ID'),
+                          CustomTextFormField(controller: _nationId, hintText: 'National ID',textInputType: TextInputType.number),
                           SizedBox(height: customWidth(0.05)),
-                          CustomTextFormField(controller: _contactAddress, hintText: 'Contact Address'),
+                          CustomTextFormField(controller: _contactAddress, hintText: 'Contact Address',textInputType: TextInputType.text),
                           SizedBox(height: customWidth(0.05)),
-                          CustomTextFormField(controller: _password, hintText: 'password'),
+                          CustomTextFormField(controller: _password, hintText: 'password',textInputType: TextInputType.text),
                           SizedBox(height: customWidth(0.15)),
 
                           _isLoading

@@ -2,9 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/controller/public_controller.dart';
-import 'package:tquicker/pages/customer/customer_registration_page.dart';
-import 'package:tquicker/pages/home_page.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
+import 'package:tquicker/pages/vehicle_owner/owner_home_page.dart';
 import 'package:tquicker/pages/vehicle_owner/owner_registration_page.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
@@ -68,9 +67,9 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
                     padding: EdgeInsets.symmetric(horizontal: customWidth(0.04)),
                     child: Column(
                       children: [
-                        CustomTextFormField(controller: _username, hintText: 'Username (Phone or Email)'),
+                        CustomTextFormField(controller: _username, hintText: 'Username (Phone or Email)',textInputType: TextInputType.text),
                         SizedBox(height: customWidth(0.08)),
-                        CustomTextFormField(controller: _password, hintText: 'Enter Your Password'),
+                        CustomTextFormField(controller: _password, hintText: 'Enter Your Password',textInputType: TextInputType.text),
                         SizedBox(height: customWidth(0.04)),
 
                         RichText(
@@ -122,7 +121,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
     await publicController.getOwnerLoginData(dataMap).then((result){
       if(result){
         setState(()=>_isLoading=false);
-        Get.offAll(()=> AddVehiclePage(ownerToken: publicController.loginResponseModel.value.token!));
+        Get.offAll(()=>const OwnerHomePage());
       }else{
         setState(()=>_isLoading=false);
         //showToast('Registration Failed!');

@@ -55,9 +55,9 @@ class CustomerLoginPage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: customWidth(0.04)),
                 child: Column(
                   children: [
-                    CustomTextFormField(controller: _phone, hintText: 'Mobile Number (ex: 01830200087)'),
+                    CustomTextFormField(controller: _phone, hintText: 'Mobile Number (ex: 01830200087)',textInputType: TextInputType.number),
                     SizedBox(height: customWidth(0.08)),
-                    CustomTextFormField(controller: _password, hintText: 'Enter Your Password'),
+                    CustomTextFormField(controller: _password, hintText: 'Enter Your Password',textInputType: TextInputType.text),
                     SizedBox(height: customWidth(0.15)),
 
                     SolidButton(child: Text('Send',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/controller/public_controller.dart';
+import 'package:tquicker/model/owner/ambulance_model.dart';
 import 'package:tquicker/model/owner/metro_name_model.dart';
 import 'package:tquicker/model/owner/vahicle_category_model.dart';
 import 'package:tquicker/model/owner/vehicle_length_model.dart';
@@ -10,6 +11,7 @@ import 'package:tquicker/model/owner/vehicle_metro_serial_model.dart';
 import 'package:tquicker/model/owner/vehicle_seat_capacity.dart';
 import 'package:tquicker/model/owner/vehicle_type_model.dart';
 import 'package:tquicker/pages/home_page.dart';
+import 'package:tquicker/pages/vehicle_owner/owner_home_page.dart';
 import 'package:tquicker/static_variable/size_config.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
@@ -27,7 +29,7 @@ class AddVehiclePage extends StatefulWidget {
 class _AddVehiclePageState extends State<AddVehiclePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey=GlobalKey();
 
-  bool _isLoading=false;
+  bool _isLoading=false,_typeLoading=false;
   VehicleCategoryModel? _vehicleCategoryModel;
   VehicleTypeModel? _vehicleTypeModel;
   MetroNameModel? _metroNameModel;
@@ -35,6 +37,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   VehicleSeatCapacityModel? _seatCapacityModel;
   VehicleLoadCapacityModel? _loadCapacityModel;
   VehicleLengthModel? _lengthModel;
+  AmbulanceModel? _ambulanceModel;
   bool _isAmbulance=false, _isAC=false;
 
   final TextEditingController _serialNumber=TextEditingController(text: '');
@@ -116,7 +119,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           _vehicleCategoryModel=value;
                           _vehicleTypeModel=null;
                         });
+                        setState(()=>_typeLoading=true);
                         await publicController.getVehicleTypeByCategory(_vehicleCategoryModel!.id!.toString());
+                        setState(()=>_typeLoading=false);
                       },
                       dropdownColor: Colors.white,
                       items: publicController.vehicleCategoryList.map<DropdownMenuItem<VehicleCategoryModel>>(
@@ -137,7 +142,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               ),
               SizedBox(width: customWidth(0.04)),
               Expanded(
-                child: Container(
+                child:_typeLoading
+                    ?const CupertinoActivityIndicator()
+                    :Container(
                   padding: EdgeInsets.symmetric(vertical: customWidth(0.015), horizontal: customWidth(0.04)),
                   decoration: BoxDecoration(
                       color: ThemeAndColor.buttonBGColor,
@@ -273,9 +280,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           ///Model & Brand
           Row(
             children: [
-              Expanded(child: CustomTextFormField(controller: _model, hintText: 'Model')),
+              Expanded(child: CustomTextFormField(controller: _model, hintText: 'Model',textInputType: TextInputType.text)),
               SizedBox(width: customWidth(0.04)),
-              Expanded(child: CustomTextFormField(controller: _brand, hintText: 'Brand')),
+              Expanded(child: CustomTextFormField(controller: _brand, hintText: 'Brand',textInputType: TextInputType.text)),
             ],
           ),
           SizedBox(height: customWidth(0.06)),
@@ -401,15 +408,15 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                 ),
               ),
               SizedBox(width: customWidth(0.04)),
-              Expanded(child: CustomTextFormField(controller: _mfgYear, hintText: 'Mfg. year'))
+              Expanded(child: CustomTextFormField(controller: _mfgYear, hintText: 'Mfg. year',textInputType: TextInputType.number))
             ],
           ),
           SizedBox(height: customWidth(0.06)),
 
-          CustomTextFormField(controller: _contactNo, hintText: 'Contact No'),
+          CustomTextFormField(controller: _contactNo, hintText: 'Contact No',textInputType: TextInputType.number),
           SizedBox(height: customWidth(0.06)),
 
-          CustomTextFormField(controller: _stand, hintText: 'Vehicle Stand'),
+          CustomTextFormField(controller: _stand, hintText: 'Vehicle Stand',textInputType: TextInputType.number),
           SizedBox(height: customWidth(0.04)),
 
           ///Ambulance & AC
@@ -448,8 +455,50 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
               )
             ],
           ),
-          SizedBox(height: customWidth(0.06)),
+          SizedBox(height: customWidth(0.04)),
 
+          _isAmbulance
+              ?Row(
+            children: [
+              Expanded(
+                child: Container(
+                  padding: EdgeInsets.symmetric(vertical: customWidth(0.015), horizontal: customWidth(0.04)),
+                  decoration: BoxDecoration(
+                      color: ThemeAndColor.buttonBGColor,
+                      border: Border.all(color: ThemeAndColor.themeColor, width: 1.5),
+                      borderRadius: BorderRadius.all(Radius.circular(customWidth(0.025)))),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<AmbulanceModel>(
+                      value: _ambulanceModel,
+                      isExpanded: true,
+                      isDense: true,
+                      hint: Text("Ambulance Type",
+                          style: Theme.of(context).textTheme.headline3!.copyWith(
+                            fontSize: customWidth(0.035),
+                            fontWeight: FontWeight.w700,
+                          )),
+                      onChanged: (value)=>setState(()=> _ambulanceModel=value),
+                      dropdownColor: Colors.white,
+                      items:AmbulanceModel.ambulanceList.map<DropdownMenuItem<AmbulanceModel>>(
+                              (AmbulanceModel model) {
+                            return DropdownMenuItem<AmbulanceModel>(
+                              value: model,
+                              child: Text(
+                                  model.ambulance!,
+                                  style: Theme.of(context).textTheme.headline3!.copyWith(
+                                    fontSize: customWidth(0.035),
+                                    fontWeight: FontWeight.w700,
+                                  )),
+                            );
+                          }).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          )
+              :Container(),
+          _isAmbulance?SizedBox(height: customWidth(0.06)):Container(),
 
           _isLoading
               ?spinCircle()
@@ -481,13 +530,17 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
       'vh_brand': _brand.text,
       'vh_model': _model.text,
       'vh_mfg_year': _mfgYear.text,
-      'vh_ambulance_type': _isAmbulance?'0':'1',
+      'vh_ambulance_type': _isAmbulance
+          ?_ambulanceModel!=null
+          ?_ambulanceModel!.id
+          :'0'
+          :'',
       'vh_ac_status': _isAC?'0':'1'
     };
     await publicController.addOwnerVehicle(dataMap,widget.ownerToken).then((result){
       if(result){
         setState(()=>_isLoading=false);
-
+        Get.to(()=>const OwnerHomePage());
       }else{
         setState(()=>_isLoading=false);
         //showToast('Registration Failed!');
