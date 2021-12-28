@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tquicker/controller/public_controller.dart';
+import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
 import 'package:tquicker/pages/vehicle_owner/owner_home_page.dart';
 import 'package:tquicker/pages/vehicle_owner/owner_registration_page.dart';
@@ -25,7 +25,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PublicController>(
+    return GetBuilder<OwnerController>(
       builder: (publicController) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
@@ -112,7 +112,7 @@ class _OwnerLoginPageState extends State<OwnerLoginPage> {
     );
   }
 
-  Future<void> _loginUser(PublicController publicController)async{
+  Future<void> _loginUser(OwnerController publicController)async{
     setState(()=>_isLoading=true);
     Map dataMap={
       'username':_username.text,

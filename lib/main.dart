@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_device_type/flutter_device_type.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tquicker/controller/public_controller.dart';
+import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/static_variable/widgets.dart';
 import 'pages/splash_screen.dart';
 import 'static_variable/theme_and_color.dart';
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final PublicController publicController = Get.put(PublicController());
+    final OwnerController publicController = Get.put(OwnerController());
     return GetMaterialApp(
         title: 'TQUiCKER',
         debugShowCheckedModeBanner: false,

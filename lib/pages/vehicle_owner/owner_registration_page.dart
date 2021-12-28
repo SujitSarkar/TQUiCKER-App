@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tquicker/controller/public_controller.dart';
+import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
@@ -35,7 +35,7 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
   @override
   initState(){
     super.initState();
-    PublicController publicController= Get.find();
+    OwnerController publicController= Get.find();
     if(publicController.vehicleCategoryList.isEmpty || publicController.metroNameList.isEmpty
     || publicController.vehicleTypeList.isEmpty || publicController.vehicleSeatCapacityList.isEmpty ||
      publicController.vehicleLengthList.isEmpty || publicController.metroSerialList.isEmpty||
@@ -47,7 +47,7 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PublicController>(
+    return GetBuilder<OwnerController>(
       builder: (publicController) {
         return Scaffold(
             key: _scaffoldKey,
@@ -176,7 +176,7 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
     );
   }
 
-  Future<void> _registerUser(PublicController publicController)async{
+  Future<void> _registerUser(OwnerController publicController)async{
     setState(()=>_isLoading=true);
 
     final List<int> _imageBytes = _imageFile!.readAsBytesSync();
@@ -193,7 +193,7 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
     await publicController.getOwnerRegData(dataMap).then((result){
       if(result){
         setState(()=>_isLoading=false);
-        Get.offAll(() => AddVehiclePage(ownerToken: publicController.regResponseModel.value.token!));
+        Get.offAll(() => AddVehiclePage(ownerToken: publicController.ownerModel.value.apiToken!));
       }else{
         setState(()=>_isLoading=false);
         //showToast('Registration Failed!');

@@ -1,35 +1,33 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/model/owner/ambulance_model.dart';
 import 'package:tquicker/model/owner/metro_name_model.dart';
+import 'package:tquicker/model/owner/owner_vehicle_list_model.dart';
 import 'package:tquicker/model/owner/vahicle_category_model.dart';
 import 'package:tquicker/model/owner/vehicle_length_model.dart';
 import 'package:tquicker/model/owner/vehicle_load_capacity_model.dart';
 import 'package:tquicker/model/owner/vehicle_metro_serial_model.dart';
 import 'package:tquicker/model/owner/vehicle_seat_capacity.dart';
 import 'package:tquicker/model/owner/vehicle_type_model.dart';
-import 'package:tquicker/pages/vehicle_owner/owner_home_page.dart';
+import 'package:tquicker/pages/vehicle_owner/register_driver_page.dart';
 import 'package:tquicker/static_variable/size_config.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 import 'package:tquicker/widgets/button.dart';
 import 'package:tquicker/widgets/custom_textformfield.dart';
-import 'package:tquicker/widgets/drawer_widget.dart';
 
-class AddVehiclePage extends StatefulWidget {
-  final String ownerToken;
-  bool? fromHome;
-  AddVehiclePage({Key? key, required this.ownerToken,this.fromHome=false}) : super(key: key);
+class UpdateVehiclePage extends StatefulWidget {
+  const UpdateVehiclePage({Key? key,required this.ownerVehicleModel}) : super(key: key);
+  final OwnerVehicleModel ownerVehicleModel;
 
   @override
-  State<AddVehiclePage> createState() => _AddVehiclePageState();
+  _UpdateVehiclePageState createState() => _UpdateVehiclePageState();
 }
 
-class _AddVehiclePageState extends State<AddVehiclePage> {
-  final GlobalKey<ScaffoldState> _scaffoldKey=GlobalKey();
+class _UpdateVehiclePageState extends State<UpdateVehiclePage> {
+  bool _isLoading=true,_typeLoading=false;
 
-  bool _isLoading=false,_typeLoading=false;
   VehicleCategoryModel? _vehicleCategoryModel;
   VehicleTypeModel? _vehicleTypeModel;
   MetroNameModel? _metroNameModel;
@@ -38,7 +36,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   VehicleLoadCapacityModel? _loadCapacityModel;
   VehicleLengthModel? _lengthModel;
   AmbulanceModel? _ambulanceModel;
-  bool _isAmbulance=false, _isAC=false;
+  bool _isAmbulance=true, _isAC=false;
 
   final TextEditingController _serialNumber=TextEditingController(text: '');
   final TextEditingController _model=TextEditingController(text: '');
@@ -50,44 +48,93 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
   @override
   initState(){
     super.initState();
-    print('Token: ${widget.ownerToken}');
-    print('From Home: ${widget.fromHome}');
-    OwnerController publicController= Get.find();
+    print(widget.ownerVehicleModel.id!);
+    OwnerController ownerController = Get.find();
+    _initializeData(ownerController);
+  }
 
-    if(publicController.vehicleCategoryList.isEmpty || publicController.metroNameList.isEmpty
-        || publicController.vehicleTypeList.isEmpty || publicController.vehicleSeatCapacityList.isEmpty||
-        publicController.vehicleLengthList.isEmpty || publicController.metroSerialList.isEmpty||
-        publicController.loadCapacityList.isEmpty){
-      publicController.getAllVehicleDataList();
+  void _initializeData(OwnerController ownerController)async{
+    if(ownerController.vehicleCategoryList.isEmpty || ownerController.metroNameList.isEmpty
+        || ownerController.vehicleTypeList.isEmpty || ownerController.vehicleSeatCapacityList.isEmpty||
+        ownerController.vehicleLengthList.isEmpty || ownerController.metroSerialList.isEmpty||
+        ownerController.loadCapacityList.isEmpty){
+      await ownerController.getAllVehicleDataList();
     }
+    await ownerController.getVehicleTypeByCategory(widget.ownerVehicleModel.vhCategory.toString());
+
+    _serialNumber.text = widget.ownerVehicleModel.vhNumber!;
+    _model.text = widget.ownerVehicleModel.vhModel!;
+    _brand.text = widget.ownerVehicleModel.vhBrand!;
+    _mfgYear.text = widget.ownerVehicleModel.vhMfgYear!.toString();
+    _stand.text = widget.ownerVehicleModel.vhStand!;
+    _contactNo.text = widget.ownerVehicleModel.vhContactNo!;
+
+    for(var element in ownerController.vehicleCategoryList){
+      if(element.id==widget.ownerVehicleModel.vhCategory){
+        _vehicleCategoryModel=element;
+      }
+    }for(var element in ownerController.vehicleTypeList){
+      if(element.id==widget.ownerVehicleModel.vhType){
+        _vehicleTypeModel=element;
+      }
+    }for(var element in ownerController.metroNameList){
+      if(element.id==widget.ownerVehicleModel.metroNameId){
+        _metroNameModel=element;
+      }
+    }for(var element in ownerController.metroSerialList){
+      if(element.id==widget.ownerVehicleModel.metroSerialId){
+        _serialModel=element;
+      }
+    }for(var element in ownerController.vehicleSeatCapacityList){
+      if(element.id==widget.ownerVehicleModel.vhSeatCapacity){
+        _seatCapacityModel=element;
+      }
+    }for(var element in ownerController.loadCapacityList){
+      if(element.id==widget.ownerVehicleModel.vhLoadCapacity){
+        _loadCapacityModel=element;
+      }
+    }for(var element in ownerController.vehicleLengthList){
+      if(element.id==widget.ownerVehicleModel.vhLength){
+        _lengthModel=element;
+      }
+    }for(var element in AmbulanceModel.ambulanceList){
+      if(int.parse(element.id!)==widget.ownerVehicleModel.vhAmbulanceType){
+        _ambulanceModel=element;
+      }
+    }
+    widget.ownerVehicleModel.vhAcStatus==0?_isAC=true:_isAC=false;
+    _ambulanceModel==null?_isAmbulance=false:_isAmbulance=true;
+
+    _isLoading=false;
+    setState((){});
   }
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder<OwnerController>(
-      builder: (publicController) {
-        return Scaffold(
-          key: _scaffoldKey,
-          drawer: const DrawerWidget(),
-          backgroundColor: Colors.white,
-          appBar: AppBar(
-            elevation: 0.0,
+        builder: (ownerController) {
+          return Scaffold(
             backgroundColor: Colors.white,
-            leading: InkWell(
-                onTap: (){
-                  _scaffoldKey.currentState!.openDrawer();
-                },
-                child: Icon(CupertinoIcons.bars,color: Colors.grey,size: customWidth(0.08))),
-            title: Text('ADD Vehicles',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.w700,fontSize: customWidth(0.05))),
-            titleSpacing: -10,
-          ),
-          body: _bodyUI(publicController),
-        );
-      }
+            appBar: AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.white,
+              title: Text(widget.ownerVehicleModel.vhBrand!,style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.w700,fontSize: customWidth(0.05))),
+              actions: [
+                TextButton(
+                    onPressed: ()=>Get.to(()=>RegisterDriverPage(vehicleId: widget.ownerVehicleModel.id!)),
+                    child: Text('Add Driver',
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: customWidth(0.04))))
+              ],
+            ),
+            body: _isLoading
+                ? spinCircle()
+                : _bodyUI(ownerController),
+          );
+        }
     );
   }
 
-  Widget _bodyUI(OwnerController publicController)=>SingleChildScrollView(
+  Widget _bodyUI(OwnerController ownerController)=>SingleChildScrollView(
     physics:const ClampingScrollPhysics(),
     child: Padding(
       padding: EdgeInsets.symmetric(horizontal: customWidth(0.04)),
@@ -102,7 +149,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: customWidth(0.015), horizontal: customWidth(0.04)),
                   decoration: BoxDecoration(
-                    color: ThemeAndColor.buttonBGColor,
+                      color: ThemeAndColor.buttonBGColor,
                       border: Border.all(color: ThemeAndColor.themeColor, width: 1.5),
                       borderRadius: BorderRadius.all(Radius.circular(customWidth(0.025)))),
                   child: DropdownButtonHideUnderline(
@@ -121,11 +168,11 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           _vehicleTypeModel=null;
                         });
                         setState(()=>_typeLoading=true);
-                        await publicController.getVehicleTypeByCategory(_vehicleCategoryModel!.id!.toString());
+                        await ownerController.getVehicleTypeByCategory(_vehicleCategoryModel!.id!.toString());
                         setState(()=>_typeLoading=false);
                       },
                       dropdownColor: Colors.white,
-                      items: publicController.vehicleCategoryList.map<DropdownMenuItem<VehicleCategoryModel>>(
+                      items: ownerController.vehicleCategoryList.map<DropdownMenuItem<VehicleCategoryModel>>(
                               (VehicleCategoryModel model) {
                             return DropdownMenuItem<VehicleCategoryModel>(
                               value: model,
@@ -163,7 +210,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           )),
                       onChanged: (value)=>setState(()=> _vehicleTypeModel=value),
                       dropdownColor: Colors.white,
-                      items: publicController.vehicleTypeList.map<DropdownMenuItem<VehicleTypeModel>>(
+                      items: ownerController.vehicleTypeList.map<DropdownMenuItem<VehicleTypeModel>>(
                               (VehicleTypeModel model) {
                             return DropdownMenuItem<VehicleTypeModel>(
                               value: model,
@@ -204,7 +251,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         )),
                     onChanged: (value)=>setState(()=> _metroNameModel=value),
                     dropdownColor: Colors.white,
-                    items: publicController.metroNameList.map<DropdownMenuItem<MetroNameModel>>(
+                    items: ownerController.metroNameList.map<DropdownMenuItem<MetroNameModel>>(
                             (MetroNameModel model) {
                           return DropdownMenuItem<MetroNameModel>(
                             value: model,
@@ -242,7 +289,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                                 )),
                             onChanged: (value)=>setState(()=> _serialModel=value),
                             dropdownColor: Colors.white,
-                            items: publicController.metroSerialList.map<DropdownMenuItem<VehicleMetroSerialModel>>(
+                            items: ownerController.metroSerialList.map<DropdownMenuItem<VehicleMetroSerialModel>>(
                                     (VehicleMetroSerialModel model) {
                                   return DropdownMenuItem<VehicleMetroSerialModel>(
                                     value: model,
@@ -260,14 +307,14 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                       Expanded(child: TextField(
                         controller: _serialNumber,
                         decoration: InputDecoration(
-                          isDense: true,
-                          contentPadding:const EdgeInsets.all(0.0),
-                          border: const UnderlineInputBorder(borderSide: BorderSide.none),
-                          hintText: 'Number',
-                          hintStyle: Theme.of(context).textTheme.headline3!.copyWith(
-                            fontSize: customWidth(0.035),
-                            fontWeight: FontWeight.w700,
-                          )
+                            isDense: true,
+                            contentPadding:const EdgeInsets.all(0.0),
+                            border: const UnderlineInputBorder(borderSide: BorderSide.none),
+                            hintText: 'Number',
+                            hintStyle: Theme.of(context).textTheme.headline3!.copyWith(
+                              fontSize: customWidth(0.035),
+                              fontWeight: FontWeight.w700,
+                            )
                         ),
                       ))
                     ],
@@ -314,7 +361,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                         });
                       },
                       dropdownColor: Colors.white,
-                      items: publicController.vehicleSeatCapacityList.map<DropdownMenuItem<VehicleSeatCapacityModel>>(
+                      items: ownerController.vehicleSeatCapacityList.map<DropdownMenuItem<VehicleSeatCapacityModel>>(
                               (VehicleSeatCapacityModel model) {
                             return DropdownMenuItem<VehicleSeatCapacityModel>(
                               value: model,
@@ -350,7 +397,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           )),
                       onChanged: (value)=>setState(()=> _loadCapacityModel=value),
                       dropdownColor: Colors.white,
-                      items: publicController.loadCapacityList.map<DropdownMenuItem<VehicleLoadCapacityModel>>(
+                      items: ownerController.loadCapacityList.map<DropdownMenuItem<VehicleLoadCapacityModel>>(
                               (VehicleLoadCapacityModel model) {
                             return DropdownMenuItem<VehicleLoadCapacityModel>(
                               value: model,
@@ -392,7 +439,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
                           )),
                       onChanged: (value)=>setState(()=> _lengthModel=value),
                       dropdownColor: Colors.white,
-                      items: publicController.vehicleLengthList.map<DropdownMenuItem<VehicleLengthModel>>(
+                      items: ownerController.vehicleLengthList.map<DropdownMenuItem<VehicleLengthModel>>(
                               (VehicleLengthModel model) {
                             return DropdownMenuItem<VehicleLengthModel>(
                               value: model,
@@ -503,9 +550,9 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
 
           _isLoading
               ?spinCircle()
-              :SolidButton(child: Text('Send',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),
+              :SolidButton(child: Text('Update',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.bold,fontSize: customWidth(0.04))),
               onPressed: (){
-                _addVehicle(publicController);
+                _updateVehicle(ownerController);
               },
               height: customWidth(0.1),
               width: customWidth(0.4),
@@ -515,7 +562,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
     ),
   );
 
-  Future<void> _addVehicle(OwnerController publicController)async{
+  Future<void> _updateVehicle(OwnerController publicController)async{
     setState(()=>_isLoading=true);
     Map dataMap={
       'vh_category':_vehicleCategoryModel!.id.toString(),
@@ -538,17 +585,12 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
           :'',
       'vh_ac_status': _isAC?'0':'1'
     };
-    await publicController.addOwnerVehicle(dataMap).then((result)async{
+    await publicController.updateOwnerVehicle(dataMap, widget.ownerVehicleModel.id!.toString()).then((result)async{
       if(result){
+        await publicController.getOwnerVehicles();
         setState(()=>_isLoading=false);
-        if(!widget.fromHome!){
-          showToast('Vehicle Added');
-          Get.to(()=>const OwnerHomePage());
-        }else {
-          showToast('Vehicle Added');
-          await publicController.getOwnerVehicles();
-        }
-
+        Get.back();
+        showToast('Vehicle Updated');
       }else{
         setState(()=>_isLoading=false);
         //showToast('Registration Failed!');

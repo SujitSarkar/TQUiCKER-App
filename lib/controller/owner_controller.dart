@@ -1,11 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tquicker/model/owner/metro_name_model.dart';
-import 'package:tquicker/model/owner/owner_login_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:tquicker/model/owner/owner_reg_model.dart';
+import 'package:tquicker/model/owner/owner_model.dart';
+import 'package:tquicker/model/owner/owner_vehicle_list_model.dart';
 import 'package:tquicker/model/owner/vahicle_category_model.dart';
 import 'package:tquicker/model/owner/vehicle_length_model.dart';
 import 'package:tquicker/model/owner/vehicle_load_capacity_model.dart';
@@ -14,15 +15,14 @@ import 'package:tquicker/model/owner/vehicle_seat_capacity.dart';
 import 'package:tquicker/model/owner/vehicle_type_model.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 
-class PublicController extends GetxController {
+class OwnerController extends GetxController {
   static const String baseUrl='http://app.tquicker.com/api/';
   
   RxBool isPhone = true.obs;
   SharedPreferences? preferences;
   RxDouble size = 0.0.obs;
 
-  Rx<OwnerRegResponseModel> regResponseModel = OwnerRegResponseModel().obs;
-  Rx<OwnerLoginResponseModel> loginResponseModel = OwnerLoginResponseModel().obs;
+  Rx<OwnerModel> ownerModel = OwnerModel().obs;
 
   RxList<VehicleCategoryModel> vehicleCategoryList = <VehicleCategoryModel>[].obs;
   RxList<MetroNameModel> metroNameList = <MetroNameModel>[].obs;
@@ -31,6 +31,7 @@ class PublicController extends GetxController {
   RxList<VehicleLengthModel> vehicleLengthList = <VehicleLengthModel>[].obs;
   RxList<VehicleMetroSerialModel> metroSerialList = <VehicleMetroSerialModel>[].obs;
   RxList<VehicleLoadCapacityModel> loadCapacityList = <VehicleLoadCapacityModel>[].obs;
+  RxList<OwnerVehicleModel> ownerVehicleList = <OwnerVehicleModel>[].obs;
 
   @override
   void onInit() {
@@ -46,10 +47,6 @@ class PublicController extends GetxController {
     else {size(MediaQuery.of(Get.context!).size.height);}
     update();
     getAllVehicleDataList();
-
-    print('IsPhone: ${isPhone.value}');
-    print('Size: ${size.value}');
-    print("Data Initialized !!!");
   }
 
   Future<bool> getOwnerRegData(Map dataMap)async{
@@ -57,10 +54,15 @@ class PublicController extends GetxController {
       var response = await http.post(Uri.parse(baseUrl+'owner_store'),
       body: dataMap);
       if(response.statusCode==200){
-        regResponseModel.value=ownerRegResponseModelFromJson(response.body);
-        regResponseModel.value.data!.name;
-        update();
+        Map map={
+          'username':dataMap['contact_no'],
+          'password':dataMap['password']};
+
         showToast('Registration Success');
+        await getOwnerLoginData(map);
+        // var jsonData = jsonDecode(response.body);
+        // ownerModel.value = OwnerModel.fromJson(jsonData['data']);
+        // update();
         return true;
       }else if(response.statusCode==400){
         showToast('Already Registered');
@@ -78,7 +80,8 @@ class PublicController extends GetxController {
       var response = await http.post(Uri.parse(baseUrl+'owner_login'),
           body: dataMap);
       if(response.statusCode==200){
-        loginResponseModel.value=ownerLoginResponseModelFromJson(response.body);
+        var jsonData = jsonDecode(response.body);
+        ownerModel.value = OwnerModel.fromJson(jsonData['user']);
         update();
         showToast('Login Success');
         return true;
@@ -149,16 +152,54 @@ class PublicController extends GetxController {
     }
   }
 
-
-  Future<bool> addOwnerVehicle(Map dataMap,String token)async{
+  Future<void> getOwnerVehicles()async{
     try{
-      var response = await http.post(Uri.parse(baseUrl+'vehicle_store/$token'),
+      var response = await http.get(Uri.parse(baseUrl+'vehicle_list_owner/${ownerModel.value.id!}'));
+      if(response.statusCode==200){
+        ownerVehicleList.value=ownerVehicleModelFromJson(response.body);
+        update();
+      }
+    }catch(error){
+      showToast(error.toString());
+    }
+  }
+
+  Future<bool> addOwnerVehicle(Map dataMap)async{
+    try{
+      var response = await http.post(Uri.parse(baseUrl+'vehicle_store/${ownerModel.value.apiToken}'),
           body: dataMap);
       if(response.statusCode==200){
-        print(response.body);
         return true;
       }
-      else{showToast('Failed');print(response.body);return false;}
+      else{showToast('Failed');return false;}
+    }catch(error){
+      showToast(error.toString());
+      return false;
+    }
+  }
+
+  Future<bool> updateOwnerVehicle(Map dataMap, String vehicleId)async{
+    try{
+      var response = await http.post(Uri.parse(baseUrl+'vehicle_update/$vehicleId/${ownerModel.value.apiToken}'),
+          body: dataMap);
+      if(response.statusCode==200){
+        return true;
+      }
+      else{showToast('Failed');return false;}
+    }catch(error){
+      showToast(error.toString());
+      return false;
+    }
+  }
+
+  Future<bool> registerDriver(Map dataMap)async{
+    try{
+      var response = await http.post(Uri.parse(baseUrl+'drive_store/${ownerModel.value.apiToken}'),
+          body: dataMap);
+      print(response.body);
+      if(response.statusCode==200){
+        return true;
+      } else{return false;}
     }catch(error){
       showToast(error.toString());
       return false;

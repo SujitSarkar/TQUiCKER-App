@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tquicker/controller/public_controller.dart';
+import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/pages/user_type.dart';
 import 'package:tquicker/static_variable/size_config.dart';
 
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     //final PublicController publicController = Get.put(PublicController());
-    return GetBuilder<PublicController>(
+    return GetBuilder<OwnerController>(
         builder: (publicController) => Scaffold(
               backgroundColor: Colors.white,
               extendBody: true,

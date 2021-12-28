@@ -1,30 +1,5 @@
-import 'dart:convert';
-
-OwnerLoginResponseModel ownerLoginResponseModelFromJson(String str) => OwnerLoginResponseModel.fromJson(json.decode(str));
-
-class OwnerLoginResponseModel {
-  OwnerLoginResponseModel({
-    this.success,
-    this.token,
-    this.userId,
-    this.user,
-  });
-
-  int? success;
-  String? token;
-  int? userId;
-  User? user;
-
-  factory OwnerLoginResponseModel.fromJson(Map<String, dynamic> json) => OwnerLoginResponseModel(
-    success: json["success"],
-    token: json["token"],
-    userId: json["user_id"],
-    user: User.fromJson(json["user"]),
-  );
-}
-
-class User {
-  User({
+class OwnerModel {
+  OwnerModel({
     this.id,
     this.nationalId,
     this.name,
@@ -54,7 +29,7 @@ class User {
   DateTime? createdAt;
   DateTime? updatedAt;
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory OwnerModel.fromJson(Map<String, dynamic> json) => OwnerModel(
     id: json["id"],
     nationalId: json["national_id"],
     name: json["name"],
@@ -69,4 +44,5 @@ class User {
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
   );
+
 }
