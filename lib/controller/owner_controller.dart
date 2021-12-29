@@ -192,6 +192,22 @@ class OwnerController extends GetxController {
     }
   }
 
+  Future<bool> updateOwnerAccount(Map dataMap)async{
+    try{
+      var response = await http.post(Uri.parse(baseUrl+'owner_update/${ownerModel.value.id}'),
+          body: dataMap);
+      print(response.body);
+      if(response.statusCode==200){
+        print(response.body);
+        return true;
+      }
+      else{return false;}
+    }catch(error){
+      showToast(error.toString());
+      return false;
+    }
+  }
+
   Future<bool> registerDriver(Map dataMap)async{
     try{
       var response = await http.post(Uri.parse(baseUrl+'drive_store/${ownerModel.value.apiToken}'),

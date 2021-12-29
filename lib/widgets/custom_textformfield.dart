@@ -7,20 +7,23 @@ class CustomTextFormField extends StatelessWidget {
   const CustomTextFormField({
     Key? key,
     required this.controller,
-    required this.hintText,
-    required this.textInputType
+    this.hintText,
+    this.textInputType,
+    this.labelText
   }) : super(key: key);
 
   final TextEditingController controller;
-  final String hintText;
-  final TextInputType textInputType;
+  final String? hintText;
+  final String? labelText;
+  final TextInputType? textInputType;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      keyboardType: textInputType,
+      keyboardType: textInputType??TextInputType.text,
       decoration: InputDecoration(
+        labelText: labelText,
         isDense: true,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 15.0, vertical: 8.0),

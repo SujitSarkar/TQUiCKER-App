@@ -6,6 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
+import 'package:tquicker/pages/vehicle_owner/owner_account_page.dart';
 import 'package:tquicker/pages/vehicle_owner/update_vehicle_page.dart';
 import 'package:tquicker/static_variable/size_config.dart';
 
@@ -310,6 +311,19 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
                     ownerToken: ownerController.ownerModel.value.apiToken!,
                     fromHome: true)),
                 title: Text('Add Vehicle',style: TextStyle(
+                    color: Colors.grey.shade900,fontSize: customWidth(0.04),fontWeight: FontWeight.w600
+                ),),
+                trailing: Icon(CupertinoIcons.right_chevron,color: Colors.grey.shade900),
+              ),
+            ),
+            SizedBox(height: customWidth(0.02)),
+
+            Card(
+              color: Theme.of(context).primaryColor.withOpacity(0.4),
+              elevation: 0.0,
+              child: ListTile(
+                onTap: ()=>Get.to(()=>const OwnerAccountPage()),
+                title: Text('Account',style: TextStyle(
                     color: Colors.grey.shade900,fontSize: customWidth(0.04),fontWeight: FontWeight.w600
                 ),),
                 trailing: Icon(CupertinoIcons.right_chevron,color: Colors.grey.shade900),

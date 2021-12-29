@@ -208,9 +208,6 @@ class _OwnerRegistrationPageState extends State<OwnerRegistrationPage> {
       setState(() {
         _imageFile = File(_image.path);
       });
-    }else {
-      showToast('Image not selected');
-    }
-
+    }else {showToast('Image not selected');}
   }
 }
