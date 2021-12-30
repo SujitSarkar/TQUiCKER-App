@@ -227,16 +227,14 @@ class OwnerController extends GetxController {
 
   Future<bool> updateDriver(Map dataMap,String id)async{
     try{
-      print(baseUrl+'drive_update/$id');
       var response = await http.post(Uri.parse(baseUrl+'drive_update/$id'),
           body: dataMap);
-
       if(response.statusCode==200){
         await getDriverListByOwner();
         return true;
       } else{return false;}
     }catch(error){
-      showToast(error.toString());
+      print(error.toString());
       return false;
     }
   }

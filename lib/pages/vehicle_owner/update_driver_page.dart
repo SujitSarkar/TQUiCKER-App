@@ -94,9 +94,8 @@ class _UpdateDriverPageState extends State<UpdateDriverPage> {
     setState(()=> _isLoading=true);
     Map dataMap;
     if(_password.text.isNotEmpty){
-
       dataMap={
-        'vahicals_id':widget.driverModel.vahicalsId,
+        'vahicals_id':widget.driverModel.vahicalsId.toString(),
         'name': _name.text,
         'email':_email.text,
         'contact_no':_contactNo.text,
@@ -106,7 +105,7 @@ class _UpdateDriverPageState extends State<UpdateDriverPage> {
         'dl_lincence_no':_dlLicenseNo.text};
     }else{
       dataMap={
-        'vahicals_id':widget.driverModel.vahicalsId,
+        'vahicals_id':widget.driverModel.vahicalsId.toString(),
         'name': _name.text,
         'email':_email.text,
         'contact_no':_contactNo.text,
@@ -119,6 +118,7 @@ class _UpdateDriverPageState extends State<UpdateDriverPage> {
       if(result){
         setState(()=> _isLoading=false);
         showToast('Update Successful');
+        Get.back();
       }else{
         setState(()=> _isLoading=false);
         showToast('Failed');
