@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +12,7 @@ import 'package:tquicker/model/owner/vehicle_load_capacity_model.dart';
 import 'package:tquicker/model/owner/vehicle_metro_serial_model.dart';
 import 'package:tquicker/model/owner/vehicle_seat_capacity.dart';
 import 'package:tquicker/model/owner/vehicle_type_model.dart';
+import 'package:tquicker/pages/vehicle_owner/driver_list_model.dart';
 import 'package:tquicker/static_variable/theme_and_color.dart';
 
 class OwnerController extends GetxController {
@@ -32,6 +32,7 @@ class OwnerController extends GetxController {
   RxList<VehicleMetroSerialModel> metroSerialList = <VehicleMetroSerialModel>[].obs;
   RxList<VehicleLoadCapacityModel> loadCapacityList = <VehicleLoadCapacityModel>[].obs;
   RxList<OwnerVehicleModel> ownerVehicleList = <OwnerVehicleModel>[].obs;
+  RxList<DriverListModel> driverListByOwner = <DriverListModel>[].obs;
 
   @override
   void onInit() {
@@ -196,9 +197,11 @@ class OwnerController extends GetxController {
     try{
       var response = await http.post(Uri.parse(baseUrl+'owner_update/${ownerModel.value.id}'),
           body: dataMap);
-      print(response.body);
       if(response.statusCode==200){
+        var jsonData = jsonDecode(response.body);
+        ownerModel.value = OwnerModel.fromJson(jsonData['data']);
         print(response.body);
+        update();
         return true;
       }
       else{return false;}
@@ -212,8 +215,8 @@ class OwnerController extends GetxController {
     try{
       var response = await http.post(Uri.parse(baseUrl+'drive_store/${ownerModel.value.apiToken}'),
           body: dataMap);
-      print(response.body);
       if(response.statusCode==200){
+        await getDriverListByOwner();
         return true;
       } else{return false;}
     }catch(error){
@@ -221,4 +224,33 @@ class OwnerController extends GetxController {
       return false;
     }
   }
+
+  Future<bool> updateDriver(Map dataMap,String id)async{
+    try{
+      print(baseUrl+'drive_update/$id');
+      var response = await http.post(Uri.parse(baseUrl+'drive_update/$id'),
+          body: dataMap);
+
+      if(response.statusCode==200){
+        await getDriverListByOwner();
+        return true;
+      } else{return false;}
+    }catch(error){
+      showToast(error.toString());
+      return false;
+    }
+  }
+
+  Future<void> getDriverListByOwner()async{
+    try{
+      var response = await http.get(Uri.parse(baseUrl+'driver_list_owner/${ownerModel.value.id}'));
+      if(response.statusCode==200){
+       driverListByOwner.value = driverListModelFromJson(response.body);
+       update();
+      }
+    }catch(error){
+      showToast(error.toString());
+    }
+  }
+
 }

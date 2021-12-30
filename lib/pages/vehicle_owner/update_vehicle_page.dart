@@ -107,6 +107,7 @@ class _UpdateVehiclePageState extends State<UpdateVehiclePage> {
 
     _isLoading=false;
     setState((){});
+
   }
 
   @override

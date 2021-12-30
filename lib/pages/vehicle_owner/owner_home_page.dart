@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import 'package:tquicker/controller/owner_controller.dart';
 import 'package:tquicker/pages/vehicle_owner/add_vehicle_page.dart';
 import 'package:tquicker/pages/vehicle_owner/owner_account_page.dart';
+import 'package:tquicker/pages/vehicle_owner/update_driver_page.dart';
 import 'package:tquicker/pages/vehicle_owner/update_vehicle_page.dart';
 import 'package:tquicker/static_variable/size_config.dart';
 
@@ -53,6 +54,7 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
 
   void _fetchAllData(OwnerController ownerController)async{
     await ownerController.getOwnerVehicles();
+    await ownerController.getDriverListByOwner();
     setState(()=>_isLoading=false);
   }
 
@@ -157,16 +159,33 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
                   child: Text('Vehicle List',style: TextStyle(fontSize: customWidth(0.05),fontWeight: FontWeight.bold),),
                 ),
                 _gridView(ownerController),
+
+                Padding(
+                  padding: EdgeInsets.all(customWidth(0.04)),
+                  child: Text('Driver List',style: TextStyle(fontSize: customWidth(0.05),fontWeight: FontWeight.bold),),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal:customWidth(0.04)),
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: ownerController.driverListByOwner.length,
+                    separatorBuilder: (BuildContext context, int index)=> SizedBox(height: customWidth(0.04)),
+                    itemBuilder: (context,index)=>Container(
+                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      child: ListTile(
+                        onTap: ()=>Get.to(()=>UpdateDriverPage(driverModel: ownerController.driverListByOwner[index])),
+                        title: Text(ownerController.driverListByOwner[index].name!),
+                        subtitle: Text(ownerController.driverListByOwner[index].contactNo!),
+                      ),
+                    )),
+                ),
+
                 _bannerSlider(
                   context,
                   "Public Transportation Offer",
                   "assets/images/images.jpg",
                 ),
-                _bannerSlider(
-                  context,
-                  "Heavy Vehicles Offer",
-                  "assets/images/images.jpg",
-                ),
+
               ],
             ),
           ),

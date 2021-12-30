@@ -38,7 +38,7 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context){
     return GetBuilder<OwnerController>(
         builder: (ownerController) {
           return Scaffold(
@@ -46,7 +46,7 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
             appBar: AppBar(
               elevation: 0.0,
               backgroundColor: Colors.white,
-              title: Text('Acount',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.w700,fontSize: customWidth(0.05))),
+              title: Text('Account',style: TextStyle(color: ThemeAndColor.textColor,fontWeight: FontWeight.w700,fontSize: customWidth(0.05))),
             ),
             body: _bodyUI(ownerController),
           );
@@ -63,10 +63,17 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
           //SizedBox(height: customWidth(0.05)),
 
           InkWell(
-            onTap: ()=>_getImageFromGallery(),
+            onTap: ()=> _getImageFromGallery(),
             child: Container(
               child:_imageFile==null
-                  ? Icon(Icons.person,size: customWidth(0.3))
+                  ? ownerController.ownerModel.value.image!=null
+                  ? ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(100)),
+                  child: Image.network(ownerController.ownerModel.value.image!,
+                      height: customWidth(0.3),
+                      width: customWidth(0.3),
+                      fit: BoxFit.cover))
+                  : Icon(Icons.person,size: customWidth(0.3))
                   : ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(100)),
                   child: Image.file(_imageFile!,
@@ -133,7 +140,7 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
           'email':_email.text,
           'contact_no':_contactNo.text,
           'national_id':_nationalId.text,
-          'contact_address':_contactNo.text,
+          'contact_address':_address.text,
           'password':_passwprd.text,
           'image':_base64Image};
       }else{
@@ -142,8 +149,7 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
           'email':_email.text,
           'contact_no':_contactNo.text,
           'national_id':_nationalId.text,
-          'contact_address':_contactNo.text,
-          'password':'',
+          'contact_address':_address.text,
           'image':_base64Image};
       }
     }else{
@@ -153,18 +159,15 @@ class _OwnerAccountPageState extends State<OwnerAccountPage> {
           'email':_email.text,
           'contact_no':_contactNo.text,
           'national_id':_nationalId.text,
-          'contact_address':_contactNo.text,
-          'password':_passwprd.text,
-          'image':''};
+          'contact_address':_address.text,
+          'password':_passwprd.text};
       }else{
         dataMap={
           'name':_name.text,
           'email':_email.text,
           'contact_no':_contactNo.text,
           'national_id':_nationalId.text,
-          'contact_address':_contactNo.text,
-          'password':'',
-          'image':''};
+          'contact_address':_address.text};
       }
     }
 
