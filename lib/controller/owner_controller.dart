@@ -166,9 +166,11 @@ class OwnerController extends GetxController {
   }
 
   Future<bool> addOwnerVehicle(Map dataMap)async{
+    print(baseUrl+'vehicle_store/${ownerModel.value.apiToken}');
     try{
       var response = await http.post(Uri.parse(baseUrl+'vehicle_store/${ownerModel.value.apiToken}'),
           body: dataMap);
+      print(response.body);
       if(response.statusCode==200){
         return true;
       }

@@ -160,9 +160,14 @@ class _OwnerHomePageState extends State<OwnerHomePage> {
                 ),
                 _gridView(ownerController),
 
-                Padding(
-                  padding: EdgeInsets.all(customWidth(0.04)),
-                  child: Text('Driver List',style: TextStyle(fontSize: customWidth(0.05),fontWeight: FontWeight.bold),),
+                InkWell(
+                  onTap: (){
+                    print(ownerController.ownerModel.value.id!);
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(customWidth(0.04)),
+                    child: Text('Driver List',style: TextStyle(fontSize: customWidth(0.05),fontWeight: FontWeight.bold),),
+                  ),
                 ),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal:customWidth(0.04)),

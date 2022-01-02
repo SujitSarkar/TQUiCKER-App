@@ -547,6 +547,7 @@ class _AddVehiclePageState extends State<AddVehiclePage> {
         }else {
           showToast('Vehicle Added');
           await publicController.getOwnerVehicles();
+          Get.back();
         }
 
       }else{

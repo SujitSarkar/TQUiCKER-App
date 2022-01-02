@@ -94,6 +94,7 @@ class _RegisterDriverPageState extends State<RegisterDriverPage> {
       if(result){
         setState(()=> _isLoading=false);
         showToast('Success');
+        Get.back();
       }else{
         setState(()=> _isLoading=false);
         showToast('Failed');
